@@ -49,10 +49,20 @@ void Game::ComposeFrame()
 {
 	double pixelDensity = 1;
 	pixelDensity = (pixelDensity * 5);
+	for (double i = 0; i < 200; i = i + pixelDensity) {
+		gfx.PutPixel(i, 50, 255, 255, 0);
+		//yellow is 50 mark
+	}
+
+	for (double i = 0; i < 200; i = i + pixelDensity) {
+		gfx.PutPixel(i,100, 255, 255, 0);
+		//yellow is 100 mark
+	}
 
 	for (double i = 0; i < 200; i = i + pixelDensity) {
 		gfx.PutPixel(200, i, 255, 255, 0);
 		//yellow is 200 mark
+	}
 		for (double i = 0; i < 200; i = i + pixelDensity) {
 			gfx.PutPixel(i, 200, 255, 255, 0);
 			//yellow is 200 mark
@@ -102,16 +112,16 @@ void Game::ComposeFrame()
 			boolean below = false;
 			boolean left = false;
 			boolean xintercepted = false;
-			boolean notabove;
-			boolean notright;
-			boolean nottopright;
+			boolean notabove = false;
+			boolean notright = false;
+			boolean nottopright = false;
 			boolean yintercepted = false;
-			//okay, so the shower code i wrote this morning was as follows
-			//create the proper slope of 25Rise/75Run, that's our slope. not fucking 25/25.
-			//you get these numbers by finding the distance between our tempX, and xPos.
+		
 			int h = 0;
 			int k = 100;
-			for (double i = 0; i < 300; i = i + pixelDensity) {
+			int tempY = 0 + k;
+			int tempX = 0 + h;
+			for (double i = 0; i < 300; i++) {
 				if (clock() < next) {
 					tickingClock = false;
 				}
@@ -124,21 +134,27 @@ void Game::ComposeFrame()
 					double xPos = (hOfSlowLine + i);
 					double yPos = (kOfSlowLine + i);
 					gfx.PutPixel(xPos, yPos, 255, 255, 255);
+					tempX = h;
+					tempY = k;
 					int rise = yPos - k;
 					int run = xPos - h;
 					double slope = rise / run;
-					int tempY = 0 + k;
-					int tempX = 0 + h;
+					
 
 
-					//this for loop runs for every x value between xpos and h. it should be expected that every time this is accessed, 
-					//it will draw xpos-h number of pixels. any use of tempcomp is assessing which of the three pixels we should use
-					//based on which one has a lesser magnitude to our desired point, (xpos,ypos)
-					double tempcompx1, tempcompx2, tempcompx3;
-					double tempcompy1, tempcompy2, tempcompy3;
+					
+					double tempcompx1, tempcompx2, tempcompx3 = 0;
+					double tempcompy1, tempcompy2, tempcompy3 = 0;
 					double magright, magabove, magtopright;
-
-					for (int z = 0; z < xPos || z == xPos; z++) {
+					tempX = h;
+					tempY = k;
+					notabove, notright, nottopright = false;
+					int z = 0;
+					while(tempX < xPos || tempY < yPos) {
+						z++;
+						////this for loop runs for every x value between xpos and h. it should be expected that every time this is accessed, 
+						//it will draw xpos-h number of pixels. any use of tempcomp is assessing which of the three pixels we should use
+						//based on which one has a lesser magnitude to our desired point, (xpos,ypos)
 						if (xPos > tempX) {
 							right = true;
 							left = false;
@@ -168,14 +184,18 @@ void Game::ComposeFrame()
 							yintercepted = true;
 							below = false;
 							above = false;
-						}
+						}																		
+						tempcompx1, tempcompx2, tempcompx3 = 0;
+						tempcompy1, tempcompy2, tempcompy3 = 0;
+						
 						if (above == true || right == true) {
-							tempcompx1 = 1 + z + h; //x value to the right
-							tempcompx2 = 0 + z + h; //x value above us
-							tempcompx3 = 1 + z + h; //x value diagonally top right
-							tempcompy1 = 0 + z + k;//y value to the right
-							tempcompy2 = 1 + -z + k;//y value above us
-							tempcompy3 = -1 - z + k;//y value diagonally to the right	
+							
+							tempcompx1 = 1  + tempX;	//x value to the right
+							tempcompx2 = 0  + tempX;	//x value above us								             			2727
+							tempcompx3 = 1 + tempX;		//x value diagonally top right				       11122            			2626
+							tempcompy1 = 0 + tempY;		//y value to the right				               11221                 2525
+							tempcompy2 = -1 + tempY;	//y value above us					               12211               
+							tempcompy3 = -1 + tempY;	//y value diagonally to the right	 1 1 1 1       22111                    
 
 							double tempcompminusx1pos = tempcompx1 - xPos;
 							double tempcompminusx2pos = tempcompx2 - xPos;
@@ -194,14 +214,15 @@ void Game::ComposeFrame()
 							double powmagx3 = pow(tempcompminusx3pos, 2);
 							double powmagy3 = pow(tempcompminusy3pos, 2);
 							double powxy3 = powmagx3 + powmagy3;
-							magtopright = sqrt(powxy3);
+							//magtopright = sqrt(powxy3);
+							magtopright = 99999999;
 						
 							if (magright < magabove && magright < magtopright) {
 								tempX = tempcompx1;
 								tempY = tempcompy1;
 								gfx.PutPixel(tempX, tempY, 255, 255, 255);
 								
-							}
+							}                                       
 							else { notright = true; }
 							if (magabove < magright && magabove < magtopright) {
 								tempX = tempcompx2;
@@ -218,14 +239,23 @@ void Game::ComposeFrame()
 							}
 							else {
 								nottopright = true;
+							}
+							if (magright == magabove) {
+								tempX = tempcompx3;
+								tempY = tempcompy3;
+								gfx.PutPixel(tempX, tempY, 255, 255, 255);
+
+							}
 								if (notabove == true && nottopright == true && notright == true) {
 									notabove = false;
 									notright = false;
 									nottopright = false;
-									tempX = tempcompx3;
-									tempY = tempcompy3;
-									gfx.PutPixel(tempX, tempY, 255, 255, 255);
+
+									//	tempX = tempcompx3;
+									//	tempY = tempcompy3;
+									//	gfx.PutPixel(tempX, tempY, 255, 255, 255);
 								}
+							}
 							}
 						}
 					}
@@ -233,9 +263,9 @@ void Game::ComposeFrame()
 			}
 
 
-		}
+		
 
 
-	}
-}
+	
+
 
