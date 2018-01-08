@@ -6,9 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <math.h>
-#include "Colors.h"
 using namespace std;
-using namespace Colors;
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
@@ -28,144 +26,24 @@ void Game::UpdateModel()
 {
 }
 
+int xena[999];
+int yondel[999];
+int counter = 0;
 
-//playan with them arrays, ya'll https://www.cs.nmsu.edu/~rth/cs/cs471/C%2B%2BDynamicArray.pdf
-class Dynarray {
-private:
-	int *pa;
-	int length;
-	int nextIndex;
-public:
-	Dynarray();						//constructor
-	~Dynarray();					//desctructor
-	int& operator[] (int index);	//indexing op
-	void add(int val);				//add a new value to the end of the array
-	int size();						//return length
-	
-	
-	
-};
-Dynarray::~Dynarray() {
-	delete[] pa;
+void usedPixels(int x, int y, int counter) {
+	xena[counter] = x;
+	yondel[counter] = y;
+
 }
-
-Dynarray::Dynarray() { //whenever this bitch is called, he just makes 11 elements, and assigns them all to zero.
-	pa = new int[10];
-	for (int i = 0; i < 10; i++) {
-		pa[i] = 0;
-		length = 10;
-		nextIndex = 0;
-	}
-}
-int Dynarray::size() {
-	return length;
-}
-int& Dynarray::operator[](int index) {
-	int *pnewa;										// pointer for new array
-	if (index >= length) {							// is element in the array?
-		pnewa = new int[index + 10];				 // allocate a bigger array
-		for (int i = 0; i < nextIndex; i++)				// copy old values
-			pnewa[i] = pa[i];
-		for (int j = nextIndex; j < index + 10; j++)		// initialize remainder
-			pnewa[j] = 0;
-		length = index + 10;						// set length to bigger size
-		delete[] pa;								// delete the old array
-		pa = pnewa;									// reassign the new array
-	}
-	if (index > nextIndex)							// set nextIndex past index
-		nextIndex = index + 1;
-	return *(pa + index);							// a reference to the element
-}
-void Dynarray::add(int val) {
-	int *pnewa;
-	if (nextIndex == length) {
-		length = length + 10;
-		pnewa = new int[length];
-		for (int i = 0; i < nextIndex; i++)
-			pnewa[i] = pa[i];
-		for (int j = nextIndex; j < length; j++)
-			pnewa[j] = 0;
-	//	jhbkljhbkjhbkjhbkjhbkjhb
-		delete[] pa;
-		pa = pnewa;
-	}
-	pa[nextIndex++] = val;
-}
-	
-	//DO WHAT YOU WERE SUPPOSED TO DO, PLEASE! ADD THE REQUESTED ELEMENT!
-	/*
-	2175234281493376693817212167497687911136241765326
-	1522357855816893656462449168377359285244818489723
-	8699878612479122897295792966916847611435449569915
-	8394221523656896187585175585497794614717874646467
-	5227699149925227227137557479769948569788884399379
-	8211113825367226995757594744732739397563489927146
-	6796359618976573474316948959912577144334819338356
-	6159843593541134749392569865481578359825844394454
-	1732198579193493414421482822296895415611693416222
-	2235465139734292867849647867133938392376985642579
-	5211323673389723181967933933832711545885653952861
-	8792315379762925178663548129431927282632695247356
-	9842333667373515899385355614883386132795926225475
-	6647827739145283577793481526768156921138428318939
-	3618597217785562645196434358718357448592431672278
-	8956273871295365112831762467398521352589752237825
-	9178625416722152155728615936587369515254936828668
-	5648572832264398812668719459987964884722491825388
-	8335418657392518315266386268399544967166328577539
-	7453876262722567452435914777363522817594741946638
-	9865717936558894664198959969241229157772244994814
-	9683734319414912373535526815194171287124586355383
-	6953349887831949788869852929147849489265325843934
-	6699993918462863192686867893725139765222825875268
-	6614816633721596149353626285151221879413927236129
-	2811529888161198799297966893366553115353639298256
-	7888193852724711872135791855235213416511179476767
-	8534114623544141144181324251481322782184381942461
-	9974979886871646621918865274574538951761567855845
-	6812723646461385847163335998438351673735252485475
-	4244294258312262453449444251625961697323585846913
-	1159773167334953658673271599748942956981954699444
-	5286896288486944468188254654851228697428397114711
-	2986263212863577965836575636286362713598361761333
-	2849756371986376967117549251566281992964573929655
-	5893138719765567848492319165138315382548123471162
-	5394981863352718517422156527977576674226268771311
-	4114344843534958833372634182176866315441583887177 W 
-	7592225988537351141918742777114346538548168415892
-	2991416468136449742932446319366933782746766177383
-	3517841763711156376147664749175267212562321567728
-	5757658448932327189714712898411716428689488521368
-	1866174123817867685738158315554775521983711612599
-	5361896562498721571413742
-
-
-	*/
-
-
-
-
 
 void Game::ComposeFrame()
 {
-	Dynarray xValLastLineDrawn; //bitchcall
-	Dynarray yValLastLineDrawn;	//bitchcall
 	double pixelDensity = 1;
 	pixelDensity = (pixelDensity * 5);
-	for (double i = 0; i < 200; i = i + pixelDensity) {
-		gfx.PutPixel(i, 50, 255, 255, 0);
-		//yellow is 50 mark
-	}
-
-	for (double i = 0; i < 200; i = i + pixelDensity) {
-		gfx.PutPixel(i,100, 255, 255, 0);
-		//yellow is 100 mark
-	}
 
 	for (double i = 0; i < 200; i = i + pixelDensity) {
 		gfx.PutPixel(200, i, 255, 255, 0);
 		//yellow is 200 mark
-	}
 		for (double i = 0; i < 200; i = i + pixelDensity) {
 			gfx.PutPixel(i, 200, 255, 255, 0);
 			//yellow is 200 mark
@@ -215,62 +93,50 @@ void Game::ComposeFrame()
 			boolean below = false;
 			boolean left = false;
 			boolean xintercepted = false;
-			boolean notabove = false;
-			boolean notright = false;
-			boolean nottopright = false;
+			boolean notabove;
+			boolean notright;
+			boolean nottopright;
 			boolean yintercepted = false;
-			boolean breakpoint = false;
-		
+			//okay, so the shower code i wrote this morning was as follows
+			//create the proper slope of 25Rise/75Run, that's our slope. not fucking 25/25.
+			//you get these numbers by finding the distance between our tempX, and xPos.
 			int h = 0;
 			int k = 100;
-			int tempY = 0 + k;
-			int tempX = 0 + h;
-			for (double i = 0; i < 300; i++) {
-				if (clock() < next) {
-					tickingClock = false;
+			//this is the master for loop. every time this terminates, a new point is drawn on the master to-draw-to line, and a new line should be redrawn to meet it.
+			for (double i = 0; i < 300; i = i + pixelDensity) { //master for loop
+				if (clock() < next) { // does nothing currently
+					tickingClock = false; //does nothing currently
 				}
-
-				//for(x val 1, x val 2, val 3){
-				//        for y val 1 2 3 { 
-				//        
-				if (clock() > next)
-					for (int xxx = 0; xxx < xValLastLineDrawn.size(); xxx++) {
-					//	gfx.PutPixel(xValLastLineDrawn[xxx], yValLastLineDrawn[xxx], LightGray);
-					}
-				yValLastLineDrawn.~Dynarray();
-				xValLastLineDrawn.~Dynarray();
-				Dynarray xValLastLineDrawn; //bitchcall
-				Dynarray yValLastLineDrawn;	//bitchcall	
+				if (clock() > next) //ticker, every next milliseconds, run the entire master for loop.
 				{
-					next += 1000;
-					tickingClock = true;
+					next += 100; //milliseconds to wait before attempting next master for loop
+					tickingClock = true; //does nothing currently
 
 
-					double xPos = (hOfSlowLine + i);
-					double yPos = (kOfSlowLine + i);
-					gfx.PutPixel(xPos, yPos, 255, 255, 255);
-					tempX = h;
-					tempY = k;
-					int rise = yPos - k;
-					int run = xPos - h;
-					double slope = rise / run;
+					double xPos = (hOfSlowLine + i); //xpos is x position of the line of the master to-draw-to line, 
+					double yPos = (kOfSlowLine + i); //ypos is the y position of the master TDT line.
+					gfx.PutPixel(xPos, yPos, 255, 255, 255); //put a pixel, every next milliseconds, to xpos, ypos, this is the line that creates the TDT line.
+					int rise = yPos - k;		//deprecated
+					int run = xPos - h;			//deprecated
+					double slope = rise / run;  //deprecated
+					int tempY = 0 + k;			//this is the master variable for the position of the lines drawn to meet the to-draw-to line. (TDT Line)
+					int tempX = 0 + h;			//this is the master variable for the position of the lines drawn to meet the to-draw-to line. (TDT Line)
+
+
+
 					
-
-
-					
-					double tempcompx1, tempcompx2, tempcompx3 = 0;
-					double tempcompy1, tempcompy2, tempcompy3 = 0;
+					double tempcompx1, tempcompx2, tempcompx3;
+					double tempcompy1, tempcompy2, tempcompy3;
 					double magright, magabove, magtopright;
-					tempX = h;
-					tempY = k;
-					notabove, notright, nottopright = false;
-					int z = 0;
-					while(tempX < xPos || tempY < yPos) {
-						z++;
-						////this while loop runs for until the x and y value of our line meet our iteration point 
-						//it will draw #### number of pixels. any use of tempcomp is assessing which of the three pixels we should use
-						//based on which one has a lesser magnitude to our desired point, (xpos,ypos)
-						//any use of tempx tempy is line placement coordinates for moving line, as it is a temporary line.
+
+					/*
+					//for loop description - orientation logic.
+					//this for loop is just a logic algorithm that determines if the point to create a line to,
+					//is to the left, to the right, above, or below, the line's h,k draw point.
+					*/
+
+			//start orientation logic, description above
+					for (int z = 0; z < xPos || z == xPos; z++) {
 						if (xPos > tempX) {
 							right = true;
 							left = false;
@@ -300,22 +166,26 @@ void Game::ComposeFrame()
 							yintercepted = true;
 							below = false;
 							above = false;
-						}																		
-						tempcompx1, tempcompx2, tempcompx3 = 0;
-						tempcompy1, tempcompy2, tempcompy3 = 0;
-						
-						if (above == true || right == true) {
-							
-							tempcompx1 = 1  + tempX;	//x value to the right
-							tempcompx2 = 0  + tempX;	//x value above us								             			2727
-							tempcompx3 = 1 + tempX;		//x value diagonally top right				       11122            			2626
-							tempcompy1 = 0 + tempY;		//y value to the right				               11221                 2525
-							tempcompy2 = -1 + tempY;	//y value above us					               12211               
-							tempcompy3 = -1 + tempY;	//y value diagonally to the right	 1 1 1 1       22111                    
+						}
+			//end orientation logic
 
-							double tempcompminusx1pos = tempcompx1 - xPos;
-							double tempcompminusx2pos = tempcompx2 - xPos;
-							double tempcompminusx3pos = tempcompx3 - xPos;
+
+			//closest pixel logic. this is not ideal, but again, this is experimental just to practice and have fun. using magnitudes instead of slopes is the idea here.
+			//the easiest solution would obviously be to utilize slopes, and for every number x travelled, travel a number y, before utilizing x again. 
+						//again, this is for fun!
+						if (above == true || right == true) {
+							tempcompx1 = 1 + z + h; //x value to the right, of Meet Line.
+							tempcompx2 = 0 + z + h; //x value above, of Meet Line.
+							tempcompx3 = 1 + z + h; //x value diagonally top right, of Meet Line.
+							tempcompy1 = 0 + z + k; //y value to the right, of Meet Line.
+							tempcompy2 = 1 + -z + k;//y value above, of Meet Line.
+							tempcompy3 = -1 - z + k;//y value diagonally to the right, of Meet Line.
+
+							//the logic below is the literal maths, determining what orientation to use to achieve
+							//the least amount of pixels to draw to meet our TDT Line from our Meet Line.
+							double tempcompminusx1pos = tempcompx1 - xPos; //example; this says, theoretically, if we chose the pixel above meet line, the
+							double tempcompminusx2pos = tempcompx2 - xPos; //magnitude would be X. Is X less than the magnitude of below, diagonal, or whatever?
+							double tempcompminusx3pos = tempcompx3 - xPos; //then set that as the chosen next pixel.
 							double tempcompminusy1pos = tempcompy1 - yPos;
 							double tempcompminusy2pos = tempcompy2 - yPos;
 							double tempcompminusy3pos = tempcompy3 - yPos;
@@ -330,105 +200,52 @@ void Game::ComposeFrame()
 							double powmagx3 = pow(tempcompminusx3pos, 2);
 							double powmagy3 = pow(tempcompminusy3pos, 2);
 							double powxy3 = powmagx3 + powmagy3;
-							//magtopright = sqrt(powxy3);
-							magtopright = 99999999;
+							magtopright = sqrt(powxy3);
 						
 							if (magright < magabove && magright < magtopright) {
 								tempX = tempcompx1;
 								tempY = tempcompy1;
+								usedPixels(tempX, tempY, z);
 								gfx.PutPixel(tempX, tempY, 255, 255, 255);
-								xValLastLineDrawn.add(tempX);
-								yValLastLineDrawn.add(tempY);
-								nottopright = false;
-								notright = false;
-								notabove = false;
-
 								
-							}                                       
+							}
 							else { notright = true; }
 							if (magabove < magright && magabove < magtopright) {
 								tempX = tempcompx2;
 								tempY = tempcompy2;
+								usedPixels(tempX, tempY, z);
 								gfx.PutPixel(tempX, tempY, 255, 255, 255);
-								xValLastLineDrawn.add(tempX);
-								yValLastLineDrawn.add(tempY);
-								nottopright = false;
-								notright = false;
-								notabove = false;
 							
 							}
 							else { notabove = true; }
-							//temporarily disabled the if below this line.
 							if (magtopright < magright && magtopright < magabove) {
 								tempX = tempcompx3;
 								tempY = tempcompy3;
+								usedPixels(tempX, tempY, z);
 								gfx.PutPixel(tempX, tempY, 255, 255, 255);
-								xValLastLineDrawn.add(tempX);
-								yValLastLineDrawn.add(tempY);
-								nottopright = false;
-								notright = false;
-								notabove = false;
 								
-							}
-							//disabled end.
-							else {
-								
-							}
-							if (magright == magabove) {
-								tempX = tempcompx3;
-								tempY = tempcompy3;
-								gfx.PutPixel(tempX, tempY, 255, 255, 255);
-								xValLastLineDrawn.add(tempX);
-								yValLastLineDrawn.add(tempY);
-								nottopright = false;
-								notright = false;
-								notabove = false;
-
 							}
 							else {
 								nottopright = true;
-							}
 								if (notabove == true && nottopright == true && notright == true) {
-									breakpoint = true;
 									notabove = false;
 									notright = false;
 									nottopright = false;
-
-									//	tempX = tempcompx3;
-									//	tempY = tempcompy3;
-									//	gfx.PutPixel(tempX, tempY, 255, 255, 255);
-									//array thoughts.
-									//if(tempX tempy != xpos ypos || < < xpos ypos){
-									/*
-									
-									array 
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									*/
+									tempX = tempcompx3;
+									tempY = tempcompy3;
+									usedPixels(tempX, tempY, z);
+									gfx.PutPixel(tempX, tempY, 255, 255, 255);
 								}
 							}
-							}
-							//while end. line is drawn.
 						}
 					}
 				}
 			}
 
 
-		
+		}
 
 
-	
-
+	}
+}
 
